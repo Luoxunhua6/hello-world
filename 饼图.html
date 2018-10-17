@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        canvas{
+            border:1px solid black;
+        }
+    </style>
+</head>
+<body>
+<canvas width="600" height="400"></canvas>
+<script>
+    var myCanvas=document.querySelector("canvas");
+    var ctx=myCanvas.getContext("2d");
+
+    var data=[
+        {
+            num:10,
+            title:"10-20s岁"
+        },
+        {
+            num:20,
+            title:"20-30s岁"
+        },
+        {
+            num:5,
+            title:"30-35s岁"
+        },
+        {
+            num:5,
+            title:"35以上"
+        }
+    ];
+    //绘制扇形图
+    var total=0;
+    var x0=ctx.canvas.width/2;
+    var y0=ctx.canvas.height/2;
+
+    function getRandomColor(){
+        var r=Math.floor(Math.random()*255)+1;
+        var g=Math.floor(Math.random()*255)+1;
+        var b=Math.floor(Math.random()*255)+1;
+        return "rgb("+r+","+g+","+b+")";
+    }
+    data.forEach(function(item,index){
+        total+=item.num;
+    });
+    var startAngle=0;
+    var endAngle=0
+    var space=20;
+    var w=30;
+    var h=20;
+    ctx.font="16px 微软雅黑";
+    ctx.textBaseline="top";
+    data.forEach(function(item,index){
+        ctx.fillStyle=getRandomColor();
+        ctx.fillRect(space,(index+1)*space+index*h,w,h);
+        ctx.strokeText(item.title,space+w,(index+1)*space+index*h);
+
+        item.angle=(item.num/total)*Math.PI*2;
+        endAngle=startAngle+item.angle;
+        ctx.beginPath();
+        ctx.moveTo(x0,y0);
+        ctx.arc(x0,y0,100,startAngle,endAngle);
+        ctx.closePath();
+
+        ctx.fill();
+        ctx.stroke();
+        startAngle=endAngle;
+    });
+console.log(data);
+</script>
+</body>
+</html>
